@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/database/entities/user.entity';
-import { CreateUserParams } from 'src/utils/types';
+import { CreateUserParams, UpdateUserParams } from 'src/utils/types';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -20,5 +20,9 @@ export class UsersService {
       created_at: new Date(),
     });
     return this.userRepository.save(new_user);
+  }
+
+  updateUser(id: number, updateUserDetails: UpdateUserParams) {
+    return this.userRepository.update({id}, { ...updateUserDetails })
   }
 }
