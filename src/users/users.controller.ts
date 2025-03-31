@@ -20,6 +20,11 @@ export class UsersController {
     return users;
   }
 
+  @Get(':id')
+  async getUserById(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.findUser(id);
+  }
+
   @Post()
   createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
@@ -30,6 +35,6 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    await this.userService.updateUser(id, updateUserDto);
+    return await this.userService.updateUser(id, updateUserDto);
   }
 }

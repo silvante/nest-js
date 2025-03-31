@@ -11,7 +11,11 @@ export class UsersService {
   ) {}
 
   getUsers() {
-    return this.userRepository.find()
+    return this.userRepository.find();
+  }
+
+  findUser(id: number) {
+    return this.userRepository.findOneBy({ id });
   }
 
   createUser(userDetails: CreateUserParams) {
@@ -23,6 +27,6 @@ export class UsersService {
   }
 
   updateUser(id: number, updateUserDetails: UpdateUserParams) {
-    return this.userRepository.update({id}, { ...updateUserDetails })
+    return this.userRepository.update({ id }, { ...updateUserDetails });
   }
 }
