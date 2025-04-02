@@ -15,7 +15,7 @@ export class AuthService {
 
   async sendmagicLink(email: string) {
     const token = this.jwtService.sign({ email }, { expiresIn: '15m' });
-    const magicLink = `http://localhost:3000/auth/verify-magic-link/?token=${token}`;
+    const magicLink = `http://localhost:${process.env.PORT}/auth/verify-magic-link/?token=${token}`;
 
     await this.mailerService.sendMail({
       to: email,
@@ -28,26 +28,29 @@ export class AuthService {
   }
 
   async verifyMagicLink(token: string) {
-    try {
-      const payload = this.jwtService.verify(token);
-      const existing_user = this.userPerository.findOneBy({
+    const payload = this.jwtService.verify(token);
+    console.log('Decoded Payload:', payload);
+
+    const existing_user = await this.userPerository.findOneBy({
+      email: payload.email,
+    });
+    console.log('Existing User:', existing_user);
+
+    if (!existing_user) {
+      const new_user = this.userPerository.create({
         email: payload.email,
+        username: 'new user',
+        password: 'hashedpasswordhere', // Use a real hash function
+        created_at: new Date(),
       });
-      if (!existing_user) {
-        const new_user = this.userPerository.create({
-          email: payload.email,
-          username: 'new user',
-          password: this.jwtService.sign({ text: 'newuser' }),
-        });
 
-        await this.userPerository.save(new_user);
-
-        return this.jwtService.sign(new_user);
-      } else {
-        return this.jwtService.sign(existing_user);
-      }
-    } catch (error) {
-      throw new Error('Invalid or expired token');
+      await this.userPerository.save(new_user);
+      return this.jwtService.sign({ id: new_user.id, email: new_user.email });
+    } else {
+      return this.jwtService.sign({
+        id: existing_user.id,
+        email: existing_user.email,
+      });
     }
   }
 
@@ -56,7 +59,7 @@ export class AuthService {
       const profile = this.jwtService.verify(token);
       return profile;
     } catch (error) {
-      throw new Error('Invalid or expired token');
+      throw new Error(error);
     }
   }
 }
