@@ -40,6 +40,8 @@ export class AuthService {
           password: this.jwtService.sign({ text: 'newuser' }),
         });
 
+        await this.userPerository.save(new_user);
+
         return this.jwtService.sign(new_user);
       } else {
         return this.jwtService.sign(existing_user);
