@@ -15,7 +15,7 @@ export class AuthService {
 
   async sendmagicLink(email: string) {
     const token = this.jwtService.sign({ email }, { expiresIn: '15m' });
-    const magicLink = `http://localhost:3000/auth/verify-magic-login/?token=${token}`;
+    const magicLink = `http://localhost:3000/auth/verify-magic-link/?token=${token}`;
 
     await this.mailerService.sendMail({
       to: email,
