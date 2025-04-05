@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/database/entities/user.entity';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -10,7 +11,7 @@ export class AuthService {
   constructor(
     private jwtService: JwtService,
     private mailerService: MailerService,
-    @InjectRepository(Users) private userPerository: Repository<Users>,
+    private prisma: PrismaService,
   ) {}
 
   async sendmagicLink(email: string) {
@@ -20,7 +21,7 @@ export class AuthService {
     await this.mailerService.sendMail({
       to: email,
       subject: 'Regiatrate With Only email',
-      text: `Click here to registarte: ${magicLink}`,
+      text: `Click here to register: ${magicLink}`,
       html: `<a href="${magicLink}">Login</a>`,
     });
 
@@ -31,20 +32,19 @@ export class AuthService {
     const payload = this.jwtService.verify(token);
     console.log('Decoded Payload:', payload);
 
-    const existing_user = await this.userPerository.findOneBy({
-      email: payload.email,
+    const existing_user = await this.prisma.user.findUnique({
+      where: { email: payload.email },
     });
     console.log('Existing User:', existing_user);
 
     if (!existing_user) {
-      const new_user = this.userPerository.create({
-        email: payload.email,
-        username: 'new user',
-        password: 'hashedpasswordhere', // Use a real hash function
-        created_at: new Date(),
+      const new_user = await this.prisma.user.create({
+        data: {
+          email: payload.email,
+          username: 'new user',
+        },
       });
 
-      await this.userPerository.save(new_user);
       return this.jwtService.sign({ id: new_user.id, email: new_user.email });
     } else {
       return this.jwtService.sign({

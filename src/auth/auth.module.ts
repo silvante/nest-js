@@ -5,6 +5,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { EmailModule } from 'src/mailers/mailer.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from 'src/database/entities/user.entity';
+import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { Users } from 'src/database/entities/user.entity';
       secret: 'coder-test-np924uhbfrc09837fg',
     }),
     EmailModule,
-    TypeOrmModule.forFeature([Users])
+    TypeOrmModule.forFeature([Users]),
+    PrismaModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
