@@ -30,7 +30,6 @@ export class AuthService {
 
   async verifyMagicLink(token: string) {
     const payload = this.jwtService.verify(token);
-    console.log('Decoded Payload:', payload);
 
     const existing_user = await this.prisma.user.findUnique({
       where: { email: payload.email },
