@@ -1,10 +1,10 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Users } from 'src/database/entities/user.entity';
+// import { InjectRepository } from '@nestjs/typeorm';
+// import { Users } from 'src/database/entities/user.entity';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Repository } from 'typeorm';
+// import { Repository } from 'typeorm';
 
 @Injectable()
 export class AuthService {
