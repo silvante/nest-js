@@ -7,3 +7,8 @@ export type UpdateUserParams = {
   username: string;
   password: string;
 };
+
+export type CreateNewPost = {
+  title: string;
+  description: string;
+}
