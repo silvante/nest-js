@@ -9,7 +9,7 @@ export class PostService {
   ) {}
 
   async createNewPost(dto: CreateNewPostDTO) {
-    await this.prisma.post.create({
+    return await this.prisma.post.create({
       data: {
         title: dto.title,
         description: dto.description,
@@ -24,7 +24,7 @@ export class PostService {
   }
 
   async getAllPosts() {
-    await this.prisma.post.findMany({
+    return await this.prisma.post.findMany({
       include: {
         creator: true,
       },
