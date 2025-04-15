@@ -18,10 +18,13 @@ model User {
   username    String  @unique
   displayname String?
   email       String  @unique
+  posts       Post[]
 }
 
 model Post {
   id          Int    @id @default(autoincrement())
   title       String
   description String
+  creator_id  Int
+  creator     User   @relation(fields: [creator_id], references: [id])
 }
