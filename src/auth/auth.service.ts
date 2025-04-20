@@ -15,12 +15,17 @@ export class AuthService {
     const token = this.jwtService.sign({ email }, { expiresIn: '15m' });
     const magicLink = `http://localhost:${process.env.PORT}/auth/verify-magic-link/?token=${token}`;
 
-    await this.mailerService.sendMail({
-      to: email,
-      subject: 'Regiatrate With Only email',
-      text: `Click here to register: ${magicLink}`,
-      html: `<a href="${magicLink}">Login</a>`,
-    });
+    try {
+      const data = await this.mailerService.sendMail({
+        to: email,
+        subject: 'Regiatrate With Only email',
+        text: `Click here to register: ${magicLink}`,
+        html: `<a href="${magicLink}">Login</a>`,
+      });
+      console.log('Email sent successfully', data);
+    } catch (err) {
+      console.log(`mailer error: ${err}`);
+    }
 
     return { message: 'magic link send' };
   }
