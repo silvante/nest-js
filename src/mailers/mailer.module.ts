@@ -8,9 +8,10 @@ dotenv.config();
   imports: [
     MailerModule.forRoot({
       transport: {
+        service: 'gmail',
         host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
+        port: 587,
+        sourse: false,
         auth: {
           user: process.env.SMTP_EMAIL,
           pass: process.env.SMTP_PASSWORD,
