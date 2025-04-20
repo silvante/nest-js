@@ -19,8 +19,11 @@ export class AuthService {
       const data = await this.mailerService.sendMail({
         to: email,
         subject: 'Regiatrate With Only email',
-        text: `Click here to register: ${magicLink}`,
-        html: `<a href="${magicLink}">Login</a>`,
+        template: './register',
+        context: {
+          name: 'New User',
+          magicLink: magicLink,
+        },
       });
       console.log('Email sent successfully', data);
     } catch (err) {
