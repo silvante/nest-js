@@ -9,10 +9,9 @@ export class AuthGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const request = context.switchToHttp().getRequest();
-    console.log('inside authguard');
     const allowed_roles = this.reflector.get(Roles, context.getHandler());
     console.log(allowed_roles);
+    const request = context.switchToHttp().getRequest();
 
     return true;
   }
