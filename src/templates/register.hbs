@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        main {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgb(100, 214, 255);
+        }
+
+        .container {
+            width: 500px;
+            text-align: center;
+        }
+
+        .head {
+            width: 100%;
+            background: #4f1fff;
+            display: flex;
+            justify-content: center;
+            padding: 10px 30px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: white;
+        }
+
+        a {
+            padding: 10px 30px;
+            background: #0c8ce9;
+            color: white;
+            text-decoration: none;
+            font-size: medium;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            <div class="head">
+                <h1>Hello {{ name }}</h1>
+            </div>
+            <a href={{magicLink}}>Click me</a>
+            <p>Click the link above to verify your email address.</p>
+        </div>
+    </main>
+</body>
+
+</html>
